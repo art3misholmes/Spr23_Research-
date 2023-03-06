@@ -6,3 +6,6 @@ test_2.py -- using second of the two given SPARQL commands; I wrote python code 
 test_3.py -- is a combination of test.py & tset_2.py with a python function that creates SQL comands, new SPARQL querys based on new graphs, and prints rows of the SPARQL command to check if populating correctly 
 
 test_4.py -- orginized and cleaned up version of test_3.py
+
+test_5.py -- takes created SPARQL to SQL command and executes SQL / creates a local database
+ 
