@@ -1,5 +1,6 @@
 from rdflib import Graph
 import sqlite3
+import pandas as pd
 
 #TODO: intake model to SPARQL -- why did I put this again?
 
@@ -22,6 +23,8 @@ for var in vars:
     sql_command += f'{var} TEXT, '
 sql_command = sql_command[:-2] + ');'
 
+#TODO: get right datatypes put in the schema -- how to use SPARQL to get datatype?
+
 # Used squlite to create in memory database and run commands 
 # Create database in memory
 connection_obj = sqlite3.connect(':memory:')
@@ -29,18 +32,17 @@ connection_obj = sqlite3.connect(':memory:')
 # Run command
 connection_obj.execute(sql_command)
 
-#TODO: get right datatypes put in the schema -- how to use SPARQL to get datatype?
-#variables to hold data types of each column
-
+# insert rows into table 
 cur = connection_obj.cursor()
-
-#TODO: insert rows into table -- what values? 
 for row in res:
-    cur.execute("INSERT INTO " + table_name + "VALUES (" + row + ")")
+    valStrs = ""
+    for var in vars:
+        valStrs = valStrs + "'" + row[var].toPython() + "',"
+    valStrs = valStrs[:-1]
+    cur.execute("INSERT INTO " + table_name + " VALUES (" + valStrs + ")")
 
 # Check to see if table was created
-cur.execute("SELECT * FROM " + table_name)
-print(cur.fetchone())
+print(pd.read_sql_query("SELECT * FROM " + table_name, connection_obj))
 
 #TODO: SQL to SPARQL
 # get database
