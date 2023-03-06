@@ -21,7 +21,6 @@ sql_command = f'CREATE TABLE {table_name} ('
 for var in vars:
     sql_command += f'{var} TEXT, '
 sql_command = sql_command[:-2] + ');'
-#print(sql_command)
 
 # Used squlite to create in memory database and run commands 
 # Create database in memory
