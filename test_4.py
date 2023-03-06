@@ -1,4 +1,8 @@
 from rdflib import Graph
+
+#TODO: intake model to SPARQL
+#TODO: create ui basic
+
 def GivenQuerys():
     # Create a Graph
     g = Graph()
@@ -38,7 +42,7 @@ def NewQuerys():
         res_4 = g2.query('SELECT * WHERE {?AHU a brick:Air_Handler_Unit . ?AHU brick:feeds ?feeds. ?AHU brick:hasPoint ?hasPoint}')
 
         # using g2 link data lists all floors
-        # is this legal? 
+        # is this legal? -- yes
         res_5 = g2.query('SELECT ?floor WHERE {?floor a brick:Floor}')
 
         # using g2 link data to see if we can get only the air handeling units hat have "hasPoint" -- output gives all the data points for "hasPoint"
@@ -90,5 +94,8 @@ def SPARQL_to_SQL(results):
 # Call functions
 GivenQuerys()
 NewQuerys()
+
+#TODO: use squlite to create in memory database and run commands 
+#TODO: get right datatypes put in the schema
 
 # TODO: SQL to SPARQL
