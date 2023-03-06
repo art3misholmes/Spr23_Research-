@@ -1,5 +1,5 @@
 from rdflib import Graph
-import mysql.connector
+import sqlite3
 
 #TODO: intake model to SPARQL
 
@@ -13,7 +13,7 @@ g.parse("https://raw.githubusercontent.com/gtfierro/mortar-parquet-support/main/
 res = g.query('SELECT * WHERE { ?vav a brick:VAV . ?vav brick:hasPoint ?p . ?p rdf:type ?type }')
 
 # Getting variable names from query 
-vars = results.vars
+vars = res.vars
 
 # Create the SQL command 
 table_name = 'test_table'
@@ -22,22 +22,19 @@ for var in vars:
     sql_command += f'{var} TEXT, '
 sql_command = sql_command[:-2] + ');'
 
+#TODO: insert rows into table
+
 # Used squlite to create in memory database and run commands 
 # Create database in memory
-mydb = mysql.connector.connect(
-    host="localhost",
-    user="kwood1",
-    password="1234@"
-)
-
-mycursor = mydb.cursor()
-mycursor.execute("CREATE DATABASE test_5_database")
+connection_obj = sqlite3.connect(':memory:')
 
 # Run command
-mycursor.execute(sql_command)
+connection_obj.execute(sql_command)
 
 # Check to see if table was created
-mycursor.execute("SELECT * FROM test_table")
+cur = connection_obj.cursor()
+cur.execute("SELECT * FROM test_table")
+print(cur.fetchone())
 
 #TODO: get right datatypes put in the schema
 
