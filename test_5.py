@@ -1,8 +1,7 @@
 from rdflib import Graph
+import rdflib
 import sqlite3
 import pandas as pd
-
-#TODO: intake model to SPARQL -- why did I put this again?
 
 # Create a Graph
 g = Graph()
@@ -23,7 +22,15 @@ for var in vars:
     sql_command += f'{var} TEXT, '
 sql_command = sql_command[:-2] + ');'
 
-#TODO: get right datatypes put in the schema -- how to use SPARQL to get datatype?
+#TODO: get right datatypes put in the schema -- got datatypes but obj has none so how do we put this into the table?
+#g.query('SELECT datatype(?vav) AS ?subject_datatype, datatype(?p) AS ?predicate_datatype, datatype(?type) AS ?object_datatype WHERE { ?vav ?p ?type .}')
+
+for subj, pred, obj in g:
+    if isinstance(obj, rdflib.term.Literal):
+        print(f"Subject datatype: {type(subj).__name__}")
+        print(f"Predicate datatype: {type(pred).__name__}")
+        print(f"Object datatype: {obj.datatype}")
+        print(f"Object val: {obj.toPython()}")
 
 # Used squlite to create in memory database and run commands 
 # Create database in memory
